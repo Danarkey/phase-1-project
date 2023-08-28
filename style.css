@@ -1,0 +1,25 @@
+.PokemonStats{
+	width:100%
+}
+
+.PokemonStats td,
+.PokemonStats th{
+	padding:0 .3em 0 0
+}
+
+.PokemonStats td:nth-child(1),
+.PokemonStats th:nth-child(1){
+	font-weight:400;font-size:.87em;text-align:right
+}
+.PokemonStats td:nth-child(2),
+.PokemonStats th:nth-child(2){
+	padding-left:.9em;font-weight:700;text-align:right
+}
+.PokemonStats td:nth-child(3),
+.PokemonStats th:nth-child(3){
+	width:100%
+}
+
+.PokemonStats-bar{
+	height:12px;box-shadow:inset 1px 4px #fff6,inset -1px -1px #0000004d;border-radius:2px;animation-name:PokemonStatBar-anim;animation-duration:.7s;animation-fill-mode:forwards;animation-timing-function:ease-in-out
+}
