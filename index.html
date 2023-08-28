@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pokédex</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/awesomplete@1.1.2/awesomplete.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/awesomplete@1.1.2/awesomplete.min.js"></script>
+</head>
+<body>
+    <input type="text" id="pokemon-search" placeholder="Search for a Pokémon">
+    <div id="autocomplete-dropdown" class="autocomplete-dropdown"></div>
+  
+  <table class="PokemonStats">
+    <tbody>
+      <tr>
+        <th>HP:</th>
+        <td id="hp-value">Loading...</td>
+        <td>
+          <div class="PokemonStats-bar" id="hp-bar"></div>
+        </td>
+      </tr>
+      <tr>
+        <th>Attack:</th>
+        <td id="attack-value">Loading...</td>
+        <td>
+          <div class="PokemonStats-bar" id="attack-bar"></div>
+        </td>
+      </tr>
+      <tr>
+        <th>Defense:</th>
+        <td id="defense-value">Loading...</td>
+        <td>
+          <div class="PokemonStats-bar" id="defense-bar"></div>
+        </td>
+      </tr>
+      <tr>
+        <th>Sp. Atk:</th>
+        <td id="special-attack-value">Loading...</td>
+        <td>
+          <div class="PokemonStats-bar" id="special-attack-bar"></div>
+        </td>
+      </tr>
+      <tr>
+        <th>Sp. Def:</th>
+        <td id="special-defense-value">Loading...</td>
+        <td>
+          <div class="PokemonStats-bar" id="special-defense-bar"></div>
+        </td>
+      </tr>
+      <tr>
+        <th class="PokemonStats-speed-title">Speed:</th>
+        <td id="speed-value">Loading...</td>
+        <td class="PokemonStats-speed-cell">
+          <div class="PokemonStats-bar" id="speed-bar"></div>
+          <div class="PokemonStats-speed-popup">
+            <!-- Speed popup content here -->
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</body>
