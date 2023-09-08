@@ -1,5 +1,99 @@
 const apiUrl = "https://pokeapi.co/api/v2/pokemon/";
 
+let pokemonList = [];
+const pokemonListElement = document.querySelector('#pokemon-options'); 
+const pokemonInputElement = document.querySelector('#pokemon-search');
+const listItems = document.querySelectorAll(".pokemon-preview li");
+
+function fetchPokemon() {
+    fetch(apiUrl + `?limit=1020&offset=0`)
+        .then((response) => response.json())
+        .then(async (data) => {
+            const pokemonData = await Promise.all(
+                data.results.map(async (pokemon) => {
+                    const response = await fetch(pokemon.url);
+                    const pokemonDetails = await response.json();
+                    return {
+                        id: pokemonDetails.id,
+                        name: pokemon.name,
+                        sprite: pokemonDetails.sprites.front_default,
+                    };
+                })
+            );
+
+            // Sort the Pokémon list by ID
+            pokemonData.sort((a, b) => a.id - b.id);
+
+            // Store the data in pokemonList
+            pokemonList = pokemonData;
+        });
+}
+
+// Function to fetch Pokemon ID Name and Sprite
+function loadData(data, element) {
+    if (data) {
+        element.innerHTML = "";
+        data.forEach((item) => {
+            const listItem = document.createElement("li");
+            listItem.innerHTML = `
+                <span>${item.id} - </span>
+                <span>${item.name}</span>
+                <img src="${item.sprite}" alt="${item.name}" />
+            `;
+            element.appendChild(listItem);
+        });
+    }
+}
+
+function filterData(data, searchText) {
+    return data.filter((x) => x.name.toLowerCase().includes(searchText.toLowerCase()));
+}
+
+fetchPokemon(); // Fetch the Pokémon list when the page loads.
+
+// Event listener to filter and display Pokémon options
+pokemonInputElement.addEventListener("input", function () {
+    const searchText = pokemonInputElement.value.toLowerCase();
+    const filteredList = filterData(pokemonList, searchText);
+    loadData(filteredList, pokemonListElement);
+});
+
+// Event listener for when a Pokémon is selected
+pokemonInputElement.addEventListener("change", function () {
+  const selectedPokemon = pokemonInputElement.value.toLowerCase();
+  if (selectedPokemon) {
+      // Update the Pokémon stats based on the selected Pokémon
+      updateStats(selectedPokemon);
+
+      // Clear the input field to make it disappear
+      pokemonInputElement.value = "";
+
+      // Hide or clear the preview list (datalist)
+      const datalist = document.getElementById("pokemon-options");
+      datalist.innerHTML = "";
+  }
+});
+
+// Add a single event listener to the entire list
+pokemonListElement.addEventListener("click", function (event) {
+  if (event.target.tagName === "LI") {
+    const clickedPokemon = event.target.textContent.trim().toLowerCase();
+    if (clickedPokemon) {
+      // Update the Pokémon stats based on the clicked Pokémon
+      updateStats(clickedPokemon);
+
+      // Set the input field's value to the clicked Pokémon
+      pokemonInputElement.value = clickedPokemon;
+
+      // Clear the preview list (datalist)
+      const datalist = document.getElementById("pokemon-options");
+      datalist.innerHTML = "";
+    }
+  }
+});
+
+
+// Updating Pokémon stats
 const calculateBarWidth = (value) => (value / 255) * 100;
 const calculateBarColor = (value) => {
     console.log("Value:", value);
@@ -21,56 +115,26 @@ const calculateBarColor = (value) => {
       return "#ff0400"; // Red
     }
   };
-  
-  
+
 const updateStats = (selectedPokemon) => {
-  fetch(apiUrl + selectedPokemon)
-    .then((response) => response.json())
-    .then((data) => {
-      const stats = data.stats;
+    fetch(apiUrl + selectedPokemon)
+        .then((response) => response.json())
+        .then((data) => {
+            const stats = data.stats;
 
-      stats.forEach((stat) => {
-        const statName = stat.stat.name;
-        const baseStat = stat.base_stat;
+            stats.forEach((stat) => {
+                const statName = stat.stat.name;
+                const baseStat = stat.base_stat;
 
-        const statValueElement = document.getElementById(`${statName}-value`);
-        const statBarElement = document.getElementById(`${statName}-bar`);
+                const statValueElement = document.getElementById(`${statName}-value`);
+                const statBarElement = document.getElementById(`${statName}-bar`);
 
-        statValueElement.textContent = baseStat;
-        statBarElement.style.width = `${calculateBarWidth(baseStat)}%`;
-        statBarElement.style.backgroundColor = calculateBarColor(baseStat);
-      });
-    })
-    .catch((error) => {
-      console.error("Error fetching API data:", error);
-    });
+                statValueElement.textContent = baseStat;
+                statBarElement.style.width = `${calculateBarWidth(baseStat)}%`;
+                statBarElement.style.backgroundColor = calculateBarColor(baseStat);
+            });
+        })
+        .catch((error) => {
+            console.error("Error fetching API data:", error);
+        });
 };
-
-const searchInput = document.getElementById("pokemon-search");
-const datalist = document.getElementById("pokemon-options");
-
-searchInput.addEventListener("input", (event) => {
-  const searchText = event.target.value.toLowerCase();
-  datalist.innerHTML = "";
-
-  fetch(apiUrl + `?limit=10&offset=0`)
-    .then((response) => response.json())
-    .then((data) => {
-      const pokemonList = data.results.map((pokemon) => pokemon.name);
-      const filteredList = pokemonList.filter((pokemon) => pokemon.includes(searchText));
-
-      filteredList.forEach((pokemon) => {
-        const option = document.createElement("option");
-        option.value = pokemon;
-        datalist.appendChild(option);
-      });
-    })
-    .catch((error) => {
-      console.error("Error fetching API data:", error);
-    });
-});
-
-searchInput.addEventListener("change", (event) => {
-  const selectedPokemon = event.target.value.toLowerCase();
-  updateStats(selectedPokemon);
-});
