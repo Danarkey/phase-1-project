@@ -1,3 +1,41 @@
+/* Input field styling */
+.preview-input {
+	padding: 25px 15px;
+    width: calc(100% - 30px);
+    border-radius: 20px;
+    font-weight: bold;
+    background-color: #fff;
+}
+
+/* Dropdown preview styling */
+.pokemon-preview {
+    position: absolute;
+    top: 70px;
+    left: 0;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    background-color: #fff;
+    width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.pokemon-preview li {
+    padding: 15px;
+    width: calc(100% - 30px);
+    font-weight: bold;
+    cursor: pointer;
+	display: block;
+}
+
+.pokemon-preview img {
+    max-width: 50px; /* Limit the width */
+    max-height: 50px; /* Limit the height */
+	vertical-align: bottom;
+}
+
+/* Stat table styling */
 .PokemonStats{
 	width:100%
 }
