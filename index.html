@@ -5,13 +5,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pokédex</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/awesomplete@1.1.2/awesomplete.css">
-  <script defer src="https://cdn.jsdelivr.net/npm/awesomplete@1.1.2/awesomplete.min.js"></script>
 </head>
 <body>
-    <input type="text" id="pokemon-search" placeholder="Search for a Pokémon">
-    <div id="autocomplete-dropdown" class="autocomplete-dropdown"></div>
-  
+  <input type="text" id="pokemon-search" list="pokemon-options" placeholder="Search for a Pokemon" class="preview-input">
+  <ul id="pokemon-options" class="pokemon-preview"></ul>
+
   <table class="PokemonStats">
     <tbody>
       <tr>
@@ -54,11 +52,12 @@
         <td id="speed-value">Loading...</td>
         <td class="PokemonStats-speed-cell">
           <div class="PokemonStats-bar" id="speed-bar"></div>
-          <div class="PokemonStats-speed-popup">
-            <!-- Speed popup content here -->
           </div>
         </td>
       </tr>
     </tbody>
   </table>
+  
+  <script src="script.js"></script>
 </body>
+</html>
