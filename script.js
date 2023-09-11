@@ -29,20 +29,20 @@ function fetchPokemon() {
         });
 }
 
-// Function to fetch Pokemon ID Name and Sprite
+// Function to fetch Pokemon ID Name
 function loadData(data, element) {
-    if (data) {
-        element.innerHTML = "";
-        data.forEach((item) => {
-            const listItem = document.createElement("li");
-            listItem.innerHTML = `
-                <span>${item.id} - </span>
-                <span>${item.name}</span>
-                <img src="${item.sprite}" alt="${item.name}" />
-            `;
-            element.appendChild(listItem);
-        });
-    }
+  if (data) {
+      element.innerHTML = "";
+      data.forEach((item) => {
+          const capitalisedPokemonName = item.name.charAt(0).toUpperCase() + item.name.slice(1); // Capitalise the first letter
+          const listItem = document.createElement("li");
+          listItem.innerHTML = `
+              <span>${item.id} - </span>
+              <span>${capitalisedPokemonName}</span>
+          `;
+          element.appendChild(listItem);
+      });
+  }
 }
 
 function filterData(data, searchText) {
@@ -65,8 +65,9 @@ pokemonInputElement.addEventListener("change", function () {
       // Update the Pokémon stats based on the selected Pokémon
       updateStats(selectedPokemon);
 
-      // Clear the input field to make it disappear
-      pokemonInputElement.value = "";
+      // Capitalise the first letter and update the input field value
+      const capitalisedPokemonName = selectedPokemon.charAt(0).toUpperCase() + selectedPokemon.slice(1);
+      pokemonInputElement.value = capitalisedPokemonName;
 
       // Hide or clear the preview list (datalist)
       const datalist = document.getElementById("pokemon-options");
@@ -82,8 +83,9 @@ pokemonListElement.addEventListener("click", function (event) {
       // Update the Pokémon stats based on the clicked Pokémon
       updateStats(clickedPokemon);
 
-      // Set the input field's value to the clicked Pokémon
-      pokemonInputElement.value = clickedPokemon;
+      // Capitalize the first letter and update the input field value
+      const capitalizedPokemonName = clickedPokemon.charAt(0).toUpperCase() + clickedPokemon.slice(1);
+      pokemonInputElement.value = capitalizedPokemonName;
 
       // Clear the preview list (datalist)
       const datalist = document.getElementById("pokemon-options");
