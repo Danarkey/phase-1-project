@@ -227,7 +227,7 @@
     grid-column: 1 / span 2;
     width: 100%;
     height: 100%;
-    background-image: url(media/poke-bg.png);
+    background-image: url(Media/poke-bg.png);
     border: 1px solid black;
     border-radius: 10px;
 }
