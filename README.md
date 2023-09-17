@@ -11,8 +11,8 @@ This project was done as part of the Front-End Web Development Phase 1 Project w
 ## Webpage URL
 You can access the webapp in a browser [here.](https://danarkey.github.io/phase-1-project/)
 
-##Blog showcasing the build
+## Blog showcasing the build
 [This blog](https://dev.to/danarkey) documented my thought process from the beginning to end as well as some additional features I would like to include in the future.
 
-##Tutorial
+## Tutorial
 [Recorded video tutorial](https://youtu.be/NJ2NCAxzEl0) on how to use the Pokedex webapp
