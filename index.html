@@ -2,61 +2,121 @@
 <html>
 <head>
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/x-icon" href="/Media/favicon.ico">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pokédex</title>
 </head>
 <body>
-  <input type="text" id="pokemon-search" list="pokemon-options" placeholder="Search for a Pokemon" class="preview-input">
-  <ul id="pokemon-options" class="pokemon-preview"></ul>
-
-  <table class="PokemonStats">
-    <tbody>
-      <tr>
-        <th>HP:</th>
-        <td id="hp-value">Loading...</td>
-        <td>
-          <div class="PokemonStats-bar" id="hp-bar"></div>
-        </td>
-      </tr>
-      <tr>
-        <th>Attack:</th>
-        <td id="attack-value">Loading...</td>
-        <td>
-          <div class="PokemonStats-bar" id="attack-bar"></div>
-        </td>
-      </tr>
-      <tr>
-        <th>Defense:</th>
-        <td id="defense-value">Loading...</td>
-        <td>
-          <div class="PokemonStats-bar" id="defense-bar"></div>
-        </td>
-      </tr>
-      <tr>
-        <th>Sp. Atk:</th>
-        <td id="special-attack-value">Loading...</td>
-        <td>
-          <div class="PokemonStats-bar" id="special-attack-bar"></div>
-        </td>
-      </tr>
-      <tr>
-        <th>Sp. Def:</th>
-        <td id="special-defense-value">Loading...</td>
-        <td>
-          <div class="PokemonStats-bar" id="special-defense-bar"></div>
-        </td>
-      </tr>
-      <tr>
-        <th class="PokemonStats-speed-title">Speed:</th>
-        <td id="speed-value">Loading...</td>
-        <td class="PokemonStats-speed-cell">
-          <div class="PokemonStats-bar" id="speed-bar"></div>
+    <div class="container">
+        <div class="left-screen">
+          <div class="left-screen-top">
+            <div class="light-container">
+              <div class="light light-blue">
+              </div>
+            </div>
+            <div class="light light-red"></div>
+            <div class="light light-yellow"></div>
+            <div class="light light-green"></div>
           </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+          <div class="left-screen-bottom">
+            <div class="main-screen">
+              <div class="main-screen-top-lights">
+              </div>
+              <div id="display" class="main-screen-display">
+                <div class="pokemon-image" id="pokemon-image-container"></div>
+              </div>
+              <div class="main-screen-speaker-light"></div>
+              <div class="main-screen-speaker">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+            </div>
+          </div>
+          <div class="left-screen-joint">
+            <div class="joint"></div>
+            <div class="joint"></div>
+            <div class="joint"></div>
+            <div class="joint"></div>
+            <div class="joint-reflextion"></div>
+          </div>
+        </div>
+        <div class="right-screen">
+          <div class="right-screen-top">
+            <div></div>
+          </div>
+          <div class="right-screen-bottom">
+            <div class="info-container">
+                <input type="text" id="pokemon-search" list="pokemon-options" placeholder="Search for a Pokemon" class="preview-input" onchange="onPokemonInputChange(this.value)">
+                <ul id="pokemon-options" class="pokemon-preview"></ul>
+                <section class="info-screen">
+                  <div class="info">
+                    <div class="label">Species:</div>
+                    <div class="desc" id="species">...</div>
+                  </div>
+                  <div class="info">
+                    <div class="label">Type:</div>
+                    <div class="desc" id="type">...</div>
+                  </div>
+                  <div id="stats" class="info">
+                    <div class="label">Stats:</div>
+                  </div>
+                  <div id="statsTable" class="info">
+                  <table class="PokemonStats">
+                    <tbody>
+                      <tr>
+                        <th>HP:</th>
+                        <td id="hp-value">Loading...</td>
+                        <td>
+                          <div class="PokemonStats-bar" id="hp-bar"></div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>Atk:</th>
+                        <td id="attack-value">Loading...</td>
+                        <td>
+                          <div class="PokemonStats-bar" id="attack-bar"></div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th style="align-items: left;">Def:</th>
+                        <td id="defense-value">Loading...</td>
+                        <td>
+                          <div class="PokemonStats-bar" id="defense-bar"></div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>Sp.Atk:</th>
+                        <td id="special-attack-value">Loading...</td>
+                        <td>
+                          <div class="PokemonStats-bar" id="special-attack-bar"></div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>Sp.Def:</th>
+                        <td id="special-defense-value">Loading...</td>
+                        <td>
+                          <div class="PokemonStats-bar" id="special-defense-bar"></div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th class="PokemonStats-speed-title">Speed:</th>
+                        <td id="speed-value">Loading...</td>
+                        <td class="PokemonStats-speed-cell">
+                          <div class="PokemonStats-bar" id="speed-bar"></div>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+            </div>
+          </div>
+        </div>
+      </div>
   
   <script src="script.js"></script>
 </body>
