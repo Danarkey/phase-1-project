@@ -3,10 +3,12 @@ const apiUrl = "https://pokeapi.co/api/v2/pokemon/";
 let pokemonList = [];
 const pokemonListElement = document.querySelector('#pokemon-options'); 
 const pokemonInputElement = document.querySelector('#pokemon-search');
+const inputField = document.getElementById("pokemon-search");
+const imageUrlContainer = document.getElementById("pokemon-image-container");
 const listItems = document.querySelectorAll(".pokemon-preview li");
 
 function fetchPokemon() {
-    fetch(apiUrl + `?limit=1020&offset=0`)
+    fetch(apiUrl + `?limit=1010&offset=0`)
         .then((response) => response.json())
         .then(async (data) => {
             const pokemonData = await Promise.all(
@@ -16,7 +18,6 @@ function fetchPokemon() {
                     return {
                         id: pokemonDetails.id,
                         name: pokemon.name,
-                        sprite: pokemonDetails.sprites.front_default,
                     };
                 })
             );
@@ -36,10 +37,7 @@ function loadData(data, element) {
       data.forEach((item) => {
           const capitalisedPokemonName = item.name.charAt(0).toUpperCase() + item.name.slice(1); // Capitalise the first letter
           const listItem = document.createElement("li");
-          listItem.innerHTML = `
-              <span>${item.id} - </span>
-              <span>${capitalisedPokemonName}</span>
-          `;
+          listItem.innerHTML = `${item.id} - ${capitalisedPokemonName}`;
           element.appendChild(listItem);
       });
   }
@@ -49,7 +47,8 @@ function filterData(data, searchText) {
     return data.filter((x) => x.name.toLowerCase().includes(searchText.toLowerCase()));
 }
 
-fetchPokemon(); // Fetch the Pokémon list when the page loads.
+// Fetch the Pokémon list when the page loads
+fetchPokemon();
 
 // Event listener to filter and display Pokémon options
 pokemonInputElement.addEventListener("input", function () {
@@ -63,37 +62,53 @@ pokemonInputElement.addEventListener("change", function () {
   const selectedPokemon = pokemonInputElement.value.toLowerCase();
   if (selectedPokemon) {
       // Update the Pokémon stats based on the selected Pokémon
-      updateStats(selectedPokemon);
+      updatePokedata(selectedPokemon);
 
       // Capitalise the first letter and update the input field value
       const capitalisedPokemonName = selectedPokemon.charAt(0).toUpperCase() + selectedPokemon.slice(1);
       pokemonInputElement.value = capitalisedPokemonName;
 
-      // Hide or clear the preview list (datalist)
+      // Hide or clear the preview list
       const datalist = document.getElementById("pokemon-options");
       datalist.innerHTML = "";
   }
 });
 
-// Add a single event listener to the entire list
+// Click event listener to the entire list
 pokemonListElement.addEventListener("click", function (event) {
   if (event.target.tagName === "LI") {
     const clickedPokemon = event.target.textContent.trim().toLowerCase();
     if (clickedPokemon) {
-      // Update the Pokémon stats based on the clicked Pokémon
-      updateStats(clickedPokemon);
+      // Autocomplete and update the input field with the clicked Pokemon name
+      pokemonInputElement.value = clickedPokemon;
 
-      // Capitalize the first letter and update the input field value
-      const capitalizedPokemonName = clickedPokemon.charAt(0).toUpperCase() + clickedPokemon.slice(1);
-      pokemonInputElement.value = capitalizedPokemonName;
+      // Trigger the "input" event on the input field to manually invoke the input event listener
+      const inputEvent = new Event("input", {
+        bubbles: true,
+        cancelable: true,
+      });
+      pokemonInputElement.dispatchEvent(inputEvent);
 
-      // Clear the preview list (datalist)
+      // Clear the preview list
       const datalist = document.getElementById("pokemon-options");
       datalist.innerHTML = "";
     }
   }
 });
 
+function onPokemonInputChange(selectedPokemon) {
+  if (selectedPokemon) {
+    // Autocomplete and update the input field with the selected Pokemon name
+    pokemonInputElement.value = selectedPokemon.toLowerCase();
+
+    // Trigger the "input" event on the input field to manually invoke the input event listener
+    const inputEvent = new Event("input", {
+      bubbles: true,
+      cancelable: true,
+    });
+    pokemonInputElement.dispatchEvent(inputEvent);
+  }
+}
 
 // Updating Pokémon stats
 const calculateBarWidth = (value) => (value / 255) * 100;
@@ -118,25 +133,59 @@ const calculateBarColor = (value) => {
     }
   };
 
-const updateStats = (selectedPokemon) => {
-    fetch(apiUrl + selectedPokemon)
-        .then((response) => response.json())
-        .then((data) => {
-            const stats = data.stats;
+function capitaliseFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+  
+const updatePokedata = (selectedPokemon) => {
+  fetch(apiUrl + selectedPokemon)
+      .then((response) => response.json())
+      .then((data) => {
+          const stats = data.stats;
 
-            stats.forEach((stat) => {
-                const statName = stat.stat.name;
-                const baseStat = stat.base_stat;
+          stats.forEach((stat) => {
+              const statName = stat.stat.name;
+              const baseStat = stat.base_stat;
 
-                const statValueElement = document.getElementById(`${statName}-value`);
-                const statBarElement = document.getElementById(`${statName}-bar`);
+              const statValueElement = document.getElementById(`${statName}-value`);
+              const statBarElement = document.getElementById(`${statName}-bar`);
 
-                statValueElement.textContent = baseStat;
-                statBarElement.style.width = `${calculateBarWidth(baseStat)}%`;
-                statBarElement.style.backgroundColor = calculateBarColor(baseStat);
-            });
-        })
-        .catch((error) => {
-            console.error("Error fetching API data:", error);
-        });
+              statValueElement.textContent = baseStat;
+              statBarElement.style.width = `${calculateBarWidth(baseStat)}%`;
+              statBarElement.style.backgroundColor = calculateBarColor(baseStat);
+          });
+
+          // Fetch the Pokémon image from the API
+          const pokemonImageUrl = data.sprites.front_default;
+          
+          // Set the Pokémon image URL
+          imageUrlContainer.style.backgroundImage = `url(${pokemonImageUrl})`;
+
+          // Fetch the species URL from the API
+          const speciesUrl = data.species.url;
+
+          // Fetch the species data from the species URL
+          fetch(speciesUrl)
+              .then((response) => response.json())
+              .then((speciesData) => {
+                  const speciesName = speciesData.names.find(name => name.language.name === 'en').name;
+                  
+                  // Set the species name in the #species element
+                  document.getElementById('species').textContent = speciesName;
+              })
+              .catch((error) => {
+                  console.error("Error fetching species data:", error);
+              });
+
+          // Fetch the Pokémon type from the API
+          const types = data.types.map(type => capitaliseFirstLetter(type.type.name));
+
+          // Set the Pokémon types in the #type element
+          document.getElementById('type').textContent = types.join(', ');
+      })
+
+      .catch((error) => {
+          console.error("Error fetching API data:", error);
+      });
 };
+
