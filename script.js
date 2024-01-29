@@ -37,7 +37,7 @@ function loadData(data, element) {
       data.forEach((item) => {
           const capitalisedPokemonName = item.name.charAt(0).toUpperCase() + item.name.slice(1); // Capitalise the first letter
           const listItem = document.createElement("li");
-          listItem.innerHTML = `${item.id} - ${capitalisedPokemonName}`;
+          listItem.innerHTML = `${capitalisedPokemonName}`;
           element.appendChild(listItem);
       });
   }
@@ -74,27 +74,28 @@ pokemonInputElement.addEventListener("change", function () {
   }
 });
 
-// Click event listener to the entire list
-pokemonListElement.addEventListener("click", function (event) {
+// Mousedown event listener to the entire list
+pokemonListElement.addEventListener("mousedown", function (event) {
   if (event.target.tagName === "LI") {
-    const clickedPokemon = event.target.textContent.trim().toLowerCase();
-    if (clickedPokemon) {
-      // Autocomplete and update the input field with the clicked Pokemon name
-      pokemonInputElement.value = clickedPokemon;
+      const clickedPokemon = event.target.textContent.trim().toLowerCase();
+      if (clickedPokemon) {
+          // Update the input field with the clicked Pokemon name
+          pokemonInputElement.value = clickedPokemon;
 
-      // Trigger the "input" event on the input field to manually invoke the input event listener
-      const inputEvent = new Event("input", {
-        bubbles: true,
-        cancelable: true,
-      });
-      pokemonInputElement.dispatchEvent(inputEvent);
+          // Trigger the "input" event on the input field to manually invoke the input event listener
+          const inputEvent = new Event("input", {
+              bubbles: true,
+              cancelable: true,
+          });
+          pokemonInputElement.dispatchEvent(inputEvent);
 
-      // Clear the preview list
-      const datalist = document.getElementById("pokemon-options");
-      datalist.innerHTML = "";
-    }
+          // Clear the preview list
+          pokemonListElement.innerHTML = "";
+      }
   }
 });
+
+
 
 function onPokemonInputChange(selectedPokemon) {
   if (selectedPokemon) {
@@ -138,6 +139,7 @@ function capitaliseFirstLetter(string) {
 }
   
 const updatePokedata = (selectedPokemon) => {
+  console.log("Updating data for:", selectedPokemon);
   fetch(apiUrl + selectedPokemon)
       .then((response) => response.json())
       .then((data) => {
@@ -188,4 +190,3 @@ const updatePokedata = (selectedPokemon) => {
           console.error("Error fetching API data:", error);
       });
 };
-
